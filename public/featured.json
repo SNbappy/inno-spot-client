@@ -1,0 +1,67 @@
+[
+    {
+        "id": "1",
+        "name": "Innovative Task Manager",
+        "tags": [
+            "Productivity",
+            "Task Management",
+            "Innovation"
+        ],
+        "image": "https://source.unsplash.com/400x300/?task,management",
+        "upvotes": 25,
+        "ownerId": "user123",
+        "createdAt": "2025-01-10T10:00:00Z"
+    },
+    {
+        "id": "2",
+        "name": "Eco-Friendly Water Bottle",
+        "tags": [
+            "Sustainability",
+            "Eco-Friendly",
+            "Health"
+        ],
+        "image": "https://source.unsplash.com/400x300/?eco,friendly",
+        "upvotes": 40,
+        "ownerId": "user456",
+        "createdAt": "2025-01-12T14:30:00Z"
+    },
+    {
+        "id": "3",
+        "name": "AI-Powered Writing Assistant",
+        "tags": [
+            "AI",
+            "Writing",
+            "Technology"
+        ],
+        "image": "https://source.unsplash.com/400x300/?ai,writing",
+        "upvotes": 55,
+        "ownerId": "user789",
+        "createdAt": "2025-01-11T09:15:00Z"
+    },
+    {
+        "id": "4",
+        "name": "Portable Solar Charger",
+        "tags": [
+            "Solar",
+            "Technology",
+            "Portable"
+        ],
+        "image": "https://source.unsplash.com/400x300/?solar,charger",
+        "upvotes": 15,
+        "ownerId": "user123",
+        "createdAt": "2025-01-09T08:45:00Z"
+    },
+    {
+        "id": "5",
+        "name": "Smart Home Security System",
+        "tags": [
+            "Smart Home",
+            "Security",
+            "Technology"
+        ],
+        "image": "https://source.unsplash.com/400x300/?smart,home",
+        "upvotes": 10,
+        "ownerId": "user456",
+        "createdAt": "2025-01-08T16:20:00Z"
+    }
+]
