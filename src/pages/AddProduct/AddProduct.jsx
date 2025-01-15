@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { TagsInput } from "react-tag-input-component";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const AddProduct = () => {
     const [productName, setProductName] = useState("");
     const [productImage, setProductImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null); // To preview the uploaded image
+    const [imagePreview, setImagePreview] = useState(null);
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([]);
-    const [ownerInfo, setOwnerInfo] = useState(null); // Owner info fetched from Firebase
+    const [ownerInfo, setOwnerInfo] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Fetch owner info from Firebase
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -21,11 +22,10 @@ const AddProduct = () => {
                     email: user.email,
                 });
             } else {
-                setOwnerInfo(null); // No user logged in
+                setOwnerInfo(null);
             }
         });
-
-        return () => unsubscribe(); // Clean up the listener on unmount
+        return () => unsubscribe();
     }, []);
 
     const handleImageChange = (e) => {
@@ -41,15 +41,20 @@ const AddProduct = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        console.log("Product Name:", productName);
+        console.log("Product Image:", productImage);
+        console.log("Description:", description);
+        console.log("Tags:", tags);
+        console.log("Owner Info:", ownerInfo);
 
         if (!productName || !productImage || !description || tags.length === 0 || !ownerInfo) {
             alert("All fields are required!");
             return;
         }
 
-        // Prepare data for submission
         const formData = new FormData();
         formData.append("productName", productName);
         formData.append("productImage", productImage);
@@ -57,13 +62,35 @@ const AddProduct = () => {
         formData.append("tags", JSON.stringify(tags));
         formData.append("ownerInfo", JSON.stringify(ownerInfo));
 
-        console.log("Form data submitted:", {
-            productName,
-            productImage,
-            description,
-            tags,
-            ownerInfo,
-        });
+        try {
+            setIsSubmitting(true);
+
+            const response = await axios.post(
+                "http://localhost:5000/add-product",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            if (response.data.success) {
+                alert("Product added successfully!");
+                setProductName("");
+                setProductImage(null);
+                setImagePreview(null);
+                setDescription("");
+                setTags([]);
+            } else {
+                alert("Failed to add the product. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error submitting product:", error);
+            alert("An error occurred while adding the product.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -102,10 +129,16 @@ const AddProduct = () => {
                 />
                 <TagsInput
                     value={tags}
-                    onChange={setTags}
+                    onChange={(updatedTags) => {
+                        console.log("Updated Tags:", updatedTags); // Debugging
+                        setTags(updatedTags); // Ensure state is updated with tags
+                    }}
                     name="tags"
                     placeHolder="Enter Tags"
                 />
+                {tags.length === 0 && (
+                    <p className="text-red-500">Please add at least one tag.</p>
+                )}
                 {ownerInfo ? (
                     <div className="flex items-center mt-4">
                         <img
@@ -124,9 +157,9 @@ const AddProduct = () => {
                 <button
                     type="submit"
                     className="px-4 py-2 mt-4 text-white bg-blue-600 rounded"
-                    disabled={!ownerInfo}
+                    disabled={!ownerInfo || isSubmitting}
                 >
-                    Submit Product
+                    {isSubmitting ? "Submitting..." : "Submit Product"}
                 </button>
             </form>
         </div>
