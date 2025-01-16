@@ -7,10 +7,10 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Products from "../pages/Products/Products";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import DashboardLayout from "../Layout/DashboardLayout";
 import MyProfile from "../pages/MyProfile/MyProfile";
 import AddProduct from "../pages/AddProduct/AddProduct";
 import MyProducts from "../pages/MyProducts/MyProducts";
+import UpdateProduct from "../pages/UpdateProduct/UpdateProduct";
 
 export const router = createBrowserRouter([
     {
@@ -51,6 +51,10 @@ export const router = createBrowserRouter([
                 path: 'my-products',
                 element: <MyProducts />,
             },
+            {
+                path: 'update-product/:id',
+                element: <UpdateProduct></UpdateProduct>
+            }
         ],
     },
 ]);
