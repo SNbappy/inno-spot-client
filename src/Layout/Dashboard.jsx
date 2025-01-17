@@ -23,6 +23,21 @@ const Dashboard = () => {
                             My Products
                         </Link>
                     </li>
+                    <li>
+                        <Link to="product-review-queue" className="block px-4 py-2 hover:bg-gray-700">
+                            Product Review Queue
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="reported-contents" className="block px-4 py-2 hover:bg-gray-700">
+                            Reported Contents
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="manage-users" className="block px-4 py-2 hover:bg-gray-700">
+                            Manage Users
+                        </Link>
+                    </li>
                 </ul>
             </div>
 

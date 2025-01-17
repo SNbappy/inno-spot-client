@@ -25,16 +25,17 @@ const Register = () => {
 
         const { name, email, password, photoURL } = formData;
 
-        // Password validation regex
+        // Password regex check
         const passwordRegex =
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+        // Check if required fields are missing
         if (!name || !email || !password) {
             setError("Please fill out all required fields.");
             return;
         }
 
-        // Password validation check
+        // Validate password format
         if (!passwordRegex.test(password)) {
             setError(
                 "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
@@ -46,7 +47,7 @@ const Register = () => {
         setError("");
 
         try {
-            // Create user with email and password
+            // Create user with Firebase Authentication
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
             // Update user profile with name and photoURL
@@ -57,15 +58,35 @@ const Register = () => {
 
             console.log("User registered:", userCredential.user);
 
-            // Navigate to login or dashboard after successful registration
+            // Send user data to the backend
+            const response = await fetch("http://localhost:5000/api/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    photoURL: photoURL || null,
+                }),
+            });
+
+            // Check if response from backend is successful
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Failed to save user data in the database");
+            }
+
+            // Navigate after successful registration
             navigate("/dashboard");
         } catch (err) {
             console.error("Registration error:", err);
-            setError(err.message);
+            setError(err.message); // Show specific error message
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -111,10 +132,7 @@ const Register = () => {
 
                     {/* Password Field */}
                     <div>
-                        <label
-                            htmlFor="password"
-                            className="block font-medium text-gray-700"
-                        >
+                        <label htmlFor="password" className="block font-medium text-gray-700">
                             Password
                         </label>
                         <input
@@ -131,10 +149,7 @@ const Register = () => {
 
                     {/* Photo URL Field */}
                     <div>
-                        <label
-                            htmlFor="photoURL"
-                            className="block font-medium text-gray-700"
-                        >
+                        <label htmlFor="photoURL" className="block font-medium text-gray-700">
                             Photo URL
                         </label>
                         <input
@@ -152,9 +167,7 @@ const Register = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`w-full py-2 text-white font-semibold rounded-lg ${loading
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-blue-500 hover:bg-blue-600"
+                        className={`w-full py-2 text-white font-semibold rounded-lg ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
                             } transition`}
                     >
                         {loading ? "Registering..." : "Register"}

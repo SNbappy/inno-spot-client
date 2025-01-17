@@ -1,169 +1,195 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { WithContext as ReactTags } from "react-tag-input";
 import axios from "axios";
-import { TagsInput } from "react-tag-input-component";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { toast } from "react-toastify";
+import UserContext from "../../context/UserContext";
 
-const AddProduct = () => {
+const AddProductPage = () => {
+    const navigate = useNavigate();
+    const { user } = useContext(UserContext); // Assumes user data is stored in context
+
+    // State variables
     const [productName, setProductName] = useState("");
     const [productImage, setProductImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([]);
-    const [ownerInfo, setOwnerInfo] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [externalLink, setExternalLink] = useState("");
 
-    useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setOwnerInfo({
-                    name: user.displayName || "Anonymous User",
-                    image: user.photoURL || "https://via.placeholder.com/150",
-                    email: user.email,
-                });
-            } else {
-                setOwnerInfo(null);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        setProductImage(file);
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
+    const KeyCodes = {
+        comma: 188,
+        enter: 13,
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
-        console.log("Product Name:", productName);
-        console.log("Product Image:", productImage);
-        console.log("Description:", description);
-        console.log("Tags:", tags);
-        console.log("Owner Info:", ownerInfo);
+    // Tag handlers
+    const handleTagDelete = (i) => {
+        setTags(tags.filter((_, index) => index !== i));
+    };
 
-        if (!productName || !productImage || !description || tags.length === 0 || !ownerInfo) {
-            alert("All fields are required!");
+    const handleTagAddition = (tag) => {
+        setTags([...tags, tag]);
+    };
+
+    // Image upload handler
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        setProductImage(file);
+    };
+
+    // Form submit handler
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Validate required fields
+        if (!productName || !productImage || !description || tags.length === 0) {
+            toast.error("Please fill in all required fields.");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("productName", productName);
-        formData.append("productImage", productImage);
-        formData.append("description", description);
-        formData.append("tags", JSON.stringify(tags));
-        formData.append("ownerInfo", JSON.stringify(ownerInfo));
-
         try {
-            setIsSubmitting(true);
+            // Prepare image data for ImgBB upload
+            const formData = new FormData();
+            formData.append("image", productImage);
 
-            const response = await axios.post(
-                "http://localhost:5000/add-product",
+            const imageUploadResponse = await axios.post(
+                "https://api.imgbb.com/1/upload",
                 formData,
                 {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
+                    params: {
+                        key: "24baa728d298bbb9d014b2a241a98e99", // Replace with actual API key
                     },
+                    headers: { "Content-Type": "multipart/form-data" },
                 }
             );
 
-            if (response.data.success) {
-                alert("Product added successfully!");
-                setProductName("");
-                setProductImage(null);
-                setImagePreview(null);
-                setDescription("");
-                setTags([]);
+            if (imageUploadResponse.data.success) {
+                const productData = {
+                    productName,
+                    productImage: imageUploadResponse.data.data.url, // ImgBB URL
+                    description,
+                    ownerInfo: {
+                        name: user.name,
+                        image: user.image,
+                        email: user.email,
+                    },
+                    tags: tags.map((tag) => tag.text),
+                    externalLink,
+                };
+
+                // Save product data to backend
+                await axios.post(
+                    `${import.meta.env.VITE_BACKEND_URL}/add-product`,
+                    productData
+                );
+
+                toast.success("Product added successfully!");
+                navigate("/dashboard/my-products");
             } else {
-                alert("Failed to add the product. Please try again.");
+                toast.error("Image upload failed. Please try again.");
             }
         } catch (error) {
-            console.error("Error submitting product:", error);
-            alert("An error occurred while adding the product.");
-        } finally {
-            setIsSubmitting(false);
+            console.error("Error adding product:", error);
+            toast.error("Failed to add product. Please try again.");
         }
     };
 
     return (
-        <div>
-            <h2 className="text-2xl font-semibold">Add Product</h2>
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-                <input
-                    type="text"
-                    placeholder="Product Name"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 border rounded"
-                />
-                <input
-                    type="file"
-                    onChange={handleImageChange}
-                    required
-                    className="w-full px-4 py-2 border rounded"
-                />
-                {imagePreview && (
-                    <div className="mt-2">
-                        <img
-                            src={imagePreview}
-                            alt="Preview"
-                            className="w-32 h-32 rounded"
-                        />
-                    </div>
-                )}
-                <textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 border rounded"
-                />
-                <TagsInput
-                    value={tags}
-                    onChange={(updatedTags) => {
-                        console.log("Updated Tags:", updatedTags); // Debugging
-                        setTags(updatedTags); // Ensure state is updated with tags
-                    }}
-                    name="tags"
-                    placeHolder="Enter Tags"
-                />
-                {tags.length === 0 && (
-                    <p className="text-red-500">Please add at least one tag.</p>
-                )}
-                {ownerInfo ? (
-                    <div className="flex items-center mt-4">
-                        <img
-                            src={ownerInfo.image}
-                            alt="Owner"
-                            className="w-12 h-12 mr-4 rounded-full"
-                        />
-                        <div>
-                            <p>{ownerInfo.name}</p>
-                            <p>{ownerInfo.email}</p>
-                        </div>
-                    </div>
-                ) : (
-                    <p className="text-red-500">User not logged in.</p>
-                )}
+        <div className="max-w-3xl p-4 mx-auto bg-white rounded-lg shadow-md">
+            <h1 className="mb-4 text-2xl font-bold">Add Product</h1>
+            <form onSubmit={handleSubmit}>
+                {/* Product Name */}
+                <div className="mb-4">
+                    <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
+                        Product Name
+                    </label>
+                    <input
+                        type="text"
+                        id="productName"
+                        value={productName}
+                        onChange={(e) => setProductName(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                        required
+                    />
+                </div>
+
+                {/* Product Image */}
+                <div className="mb-4">
+                    <label htmlFor="productImage" className="block text-sm font-medium text-gray-700">
+                        Product Image
+                    </label>
+                    <input
+                        type="file"
+                        id="productImage"
+                        onChange={handleImageUpload}
+                        accept="image/*"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                        required
+                    />
+                </div>
+
+                {/* Description */}
+                <div className="mb-4">
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                        Description
+                    </label>
+                    <textarea
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                        required
+                    />
+                </div>
+
+                {/* Tags */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Tags</label>
+                    <ReactTags
+                        tags={tags}
+                        handleDelete={handleTagDelete}
+                        handleAddition={handleTagAddition}
+                        delimiters={delimiters}
+                        classNames={{
+                            tags: "tags-input",
+                            tagInputField: "w-full px-3 py-2 border rounded-md focus:outline-none",
+                        }}
+                    />
+                </div>
+
+                {/* External Link */}
+                <div className="mb-4">
+                    <label htmlFor="externalLink" className="block text-sm font-medium text-gray-700">
+                        External Link
+                    </label>
+                    <input
+                        type="url"
+                        id="externalLink"
+                        value={externalLink}
+                        onChange={(e) => setExternalLink(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                    />
+                </div>
+
+                {/* Owner Info */}
+                <div className="mb-4">
+                    <h2 className="text-lg font-medium">Owner Info</h2>
+                    <p className="text-gray-700">Name: {user.name}</p>
+                    <p className="text-gray-700">Email: {user.email}</p>
+                    <img src={user.image} alt="Owner" className="w-16 h-16 mt-2 rounded-full" />
+                </div>
+
+                {/* Submit Button */}
                 <button
                     type="submit"
-                    className="px-4 py-2 mt-4 text-white bg-blue-600 rounded"
-                    disabled={!ownerInfo || isSubmitting}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                 >
-                    {isSubmitting ? "Submitting..." : "Submit Product"}
+                    Submit
                 </button>
             </form>
         </div>
     );
 };
 
-export default AddProduct;
+export default AddProductPage;
