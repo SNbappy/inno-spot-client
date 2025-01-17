@@ -5,7 +5,6 @@ import Main from "../Layout/Main";
 import Home from "../pages/Home/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
-import Products from "../pages/Products/Products";
 import Dashboard from "../Layout/Dashboard";
 import MyProfile from "../pages/MyProfile/MyProfile";
 import AddProduct from "../pages/AddProduct/AddProduct";
@@ -16,6 +15,8 @@ import ProductDetailsPage from "../pages/ProductDetailsPage/ProductDetailsPage";
 import ReportedContentsPage from "../pages/ReportedContentsPage/ReportedContentsPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import ManageUsersPage from "../pages/ManageUsersPage/ManageUsersPage";
+import PrivateRoute from "./PrivateRoute";
+import ProductsPage from "../pages/ProductsPage/ProductsPage";
 
 export const router = createBrowserRouter([
     {
@@ -37,13 +38,13 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'products',
-                element: <Products />,
+                element: <ProductsPage />,
             },
         ],
     },
     {
         path: "/dashboard",
-        element: <Dashboard/>,
+        element: <PrivateRoute><Dashboard /></PrivateRoute>,
         children: [
             {
                 path: 'profile',
