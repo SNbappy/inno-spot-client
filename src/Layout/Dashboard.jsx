@@ -1,4 +1,6 @@
 import React from "react";
+import { AiOutlineProduct } from "react-icons/ai";
+import { IoHome } from "react-icons/io5";
 import { Link, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
@@ -36,6 +38,20 @@ const Dashboard = () => {
                     <li>
                         <Link to="manage-users" className="block px-4 py-2 hover:bg-gray-700">
                             Manage Users
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="statistics" className="block px-4 py-2 hover:bg-gray-700">
+                            Statistics
+                        </Link>
+                    </li>
+                    <hr className="my-3" />
+                    <li>
+                        <Link to="/" className="flex items-center gap-1 px-4 py-2 hover:bg-gray-700">
+                            <IoHome />Home
+                        </Link>
+                        <Link to="/products" className="flex items-center gap-1 px-4 py-2 hover:bg-gray-700">
+                            <AiOutlineProduct />Products
                         </Link>
                     </li>
                 </ul>

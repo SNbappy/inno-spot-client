@@ -17,6 +17,7 @@ import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import ManageUsersPage from "../pages/ManageUsersPage/ManageUsersPage";
 import PrivateRoute from "./PrivateRoute";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
+import StatisticsPage from "../pages/StatisticsPage/StatisticsPage";
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
             {
                 path: 'products',
                 element: <ProductsPage />,
+            },
+            {
+                path: 'product-details/:id',
+                element: <ProductDetailsPage />
             },
         ],
     },
@@ -67,16 +72,16 @@ export const router = createBrowserRouter([
                 element: <ProductReviewQueuePage/>
             },
             {
-                path: 'product-details/:id',
-                element: <ProductDetailsPage/>
-            },
-            {
                 path: 'reported-contents',
                 element: <ReportedContentsPage/>
             },
             {
                 path: 'manage-users',
                 element: <ManageUsersPage/>
+            },
+            {
+                path: 'statistics',
+                element: <StatisticsPage/>
             },
         ],
     },
