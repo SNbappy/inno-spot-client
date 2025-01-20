@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Swal from "sweetalert2";
 
 const stripePromise = loadStripe("pk_test_51QhAuXJo6M9gjrVCNhOGB4qs1ZZlBmKwJRrI5UOqhC4AdIdQh5RXbHxXOJEKZJDixHrnzYQIljatO17nzAmaGZqo00uw2S2143");
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://inno-spot-server.vercel.app";
 
 const MyProfile = () => {
     const [user, setUser] = useState(null);

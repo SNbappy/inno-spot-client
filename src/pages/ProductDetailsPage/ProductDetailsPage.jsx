@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../../context/UserContext";
 import Swal from "sweetalert2"; // Import Swal for alerts
+import { auth } from "../firebase/firebase.config";
 
 const ProductDetailsPage = () => {
     const { id } = useParams(); // Get product ID from URL params
@@ -31,65 +32,67 @@ const ProductDetailsPage = () => {
     }, [id, user?.id]);
 
     const handleVote = async (productId) => {
-        if (user) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You are about to upvote this product!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, upvote!',
-                cancelButtonText: 'Cancel',
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        // Ensure user has getIdToken method
-                        const idToken = user?.getIdToken ? await user.getIdToken() : await firebase.auth().currentUser.getIdToken();
+        const user = auth.currentUser; // Get current user
 
-                        const response = await axios.post(
-                            `${import.meta.env.VITE_BACKEND_URL}/products/vote`,
-                            { productId },
-                            {
-                                headers: {
-                                    Authorization: `Bearer ${idToken}`,
-                                },
-                            }
-                        );
-
-                        // console.log("Vote successful:", response.data);
-                        Swal.fire({
-                            title: 'Success!',
-                            text: response.data.message,
-                            icon: 'success',
-                            confirmButtonText: 'Okay',
-                        });
-
-                        // Update the product without causing navigation issues
-                        setProduct((prevProduct) => ({
-                            ...prevProduct,
-                            votesCount: response.data.votesCount,
-                            votedUsers: [...prevProduct.votedUsers, user?.email], // Add user to voted users
-                        }));
-                        setUpvoted(true); // Mark as upvoted
-                    } catch (error) {
-                        console.error("Error voting:", error.response?.data || error.message);
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Error voting. Please try again.',
-                            icon: 'error',
-                            confirmButtonText: 'Try Again',
-                        });
-                    }
-                }
-            });
-        } else {
+        if (!user) {
             Swal.fire({
                 title: 'Login Required',
                 text: 'You need to be logged in to vote.',
                 icon: 'warning',
                 confirmButtonText: 'Okay',
             });
+            return;
         }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to upvote this product!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, upvote!',
+            cancelButtonText: 'Cancel',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const idToken = await user.getIdToken();  // Retrieve ID Token
+
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_BACKEND_URL}/products/vote`,
+                        { productId },
+                        {
+                            headers: {
+                                Authorization: `Bearer ${idToken}`,
+                            },
+                        }
+                    );
+
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'Okay',
+                    });
+
+                    // Update product state with new vote count
+                    setProduct(prevProduct => ({
+                        ...prevProduct,
+                        votesCount: response.data.votesCount,
+                        votedUsers: [...prevProduct.votedUsers, user.email],
+                    }));
+                } catch (error) {
+                    console.error('Error voting:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Error voting. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                    });
+                }
+            }
+        });
     };
+
+
 
 
     // Define the handleReport function

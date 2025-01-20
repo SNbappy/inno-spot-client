@@ -57,7 +57,6 @@ const Register = () => {
             });
 
             // console.log("User registered:", userCredential.user);
-
             // Send user data to the backend
             const response = await fetch("https://inno-spot-server.vercel.app/api/users", {
                 method: "POST",
