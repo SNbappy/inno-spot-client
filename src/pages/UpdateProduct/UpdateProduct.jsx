@@ -19,7 +19,7 @@ const UpdateProduct = () => {
         // Fetch product details by ID
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/products/${id}`);
+                const response = await axios.get(`https://inno-spot-server.vercel.app/products/${id}`);
                 if (response.data.success) {
                     setProduct({
                         productName: response.data.product.productName,
@@ -53,7 +53,7 @@ const UpdateProduct = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:5000/update-product/${id}`,
+                `https://inno-spot-server.vercel.app/update-product/${id}`,
                 {
                     productName: product.productName,
                     description: product.description,

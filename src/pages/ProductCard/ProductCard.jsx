@@ -19,7 +19,7 @@ const ProductCard = ({ product, userId, handleVote }) => {
             {/* Product Name */}
             <h2
                 className="text-lg font-bold text-blue-600 cursor-pointer hover:underline"
-                onClick={() => navigate(`/products/${product._id}`)} // Redirect to product details
+                onClick={() => navigate(`/product-details/${product._id}`)} // Redirect to product details
             >
                 {product?.productName || "Unnamed Product"}
             </h2>

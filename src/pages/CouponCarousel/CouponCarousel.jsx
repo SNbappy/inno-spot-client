@@ -14,7 +14,7 @@ const CouponCarousel = () => {
 
     const fetchValidCoupons = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/coupons");
+            const response = await axios.get("https://inno-spot-server.vercel.app/coupons");
             if (response.data.success) {
                 const validCoupons = response.data.coupons.filter((coupon) => {
                     const expiryDate = new Date(coupon.expiryDate);

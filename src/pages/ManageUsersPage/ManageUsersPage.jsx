@@ -11,7 +11,7 @@ const ManageUsersPage = () => {
         const fetchUsers = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("http://localhost:5000/users");
+                const response = await axios.get("https://inno-spot-server.vercel.app/users");
                 setUsers(response.data.users);
             } catch (err) {
                 setError("Failed to fetch users.");
@@ -26,7 +26,7 @@ const ManageUsersPage = () => {
     // Function to update user role
     const updateUserRole = async (userId, role) => {
         try {
-            await axios.patch(`http://localhost:5000/users/${userId}`, { role });
+            await axios.patch(`https://inno-spot-server.vercel.app/users/${userId}`, { role });
             setUsers((prevUsers) =>
                 prevUsers.map((user) =>
                     user._id === userId ? { ...user, role } : user

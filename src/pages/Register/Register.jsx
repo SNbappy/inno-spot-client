@@ -56,10 +56,10 @@ const Register = () => {
                 photoURL: photoURL || null,
             });
 
-            console.log("User registered:", userCredential.user);
+            // console.log("User registered:", userCredential.user);
 
             // Send user data to the backend
-            const response = await fetch("http://localhost:5000/api/users", {
+            const response = await fetch("https://inno-spot-server.vercel.app/api/users", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

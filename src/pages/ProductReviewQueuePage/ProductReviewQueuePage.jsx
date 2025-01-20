@@ -16,7 +16,7 @@ const ProductReviewQueuePage = () => {
                     `${import.meta.env.VITE_BACKEND_URL}/products?page=${currentPage}`
                 );
 
-                console.log("Products fetched from backend:", response.data);
+                // console.log("Products fetched from backend:", response.data);
 
                 if (response.data.success) {
                     const sortedProducts = response.data.products.sort((a, b) =>

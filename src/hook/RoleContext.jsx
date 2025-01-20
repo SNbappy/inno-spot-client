@@ -13,10 +13,10 @@ export const RoleProvider = ({ children }) => {
         const auth = getAuth();
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
-                console.log("User logged in:", user.email); // Debugging log
+                // console.log("User logged in:", user.email); // Debugging log
                 try {
                     const userRole = await fetchUserRole(user.email);
-                    console.log("Fetched role from backend:", userRole); // Debugging log
+                    // console.log("Fetched role from backend:", userRole); // Debugging log
                     setRole(userRole); // Set the role
                     setRoleError(null); // Reset any previous errors
                 } catch (error) {
@@ -25,7 +25,7 @@ export const RoleProvider = ({ children }) => {
                     setRole(null); // Set role to null in case of error
                 }
             } else {
-                console.log("No user logged in."); // Debugging log
+                // console.log("No user logged in."); // Debugging log
                 setRole(null); // No user logged in, set role to null
             }
             setLoading(false);

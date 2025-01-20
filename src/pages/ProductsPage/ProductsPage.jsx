@@ -16,7 +16,7 @@ const ProductsPage = () => {
     // Fetch products with search and pagination
     const fetchProducts = async (page = 1, search = "") => {
         try {
-            const response = await axios.get("http://localhost:5000/products", {
+            const response = await axios.get("https://inno-spot-server.vercel.app/products", {
                 params: { page, limit: PRODUCTS_PER_PAGE, search },
             });
             setProducts(response.data.products);
@@ -43,7 +43,7 @@ const ProductsPage = () => {
                     try {
                         const idToken = await user.getIdToken();
                         const response = await axios.post(
-                            "http://localhost:5000/products/vote",
+                            "https://inno-spot-server.vercel.app/products/vote",
                             { productId },
                             {
                                 headers: {
@@ -52,7 +52,7 @@ const ProductsPage = () => {
                             }
                         );
 
-                        console.log("Vote successful:", response.data);
+                        // console.log("Vote successful:", response.data);
                         Swal.fire({
                             title: 'Success!',
                             text: response.data.message,

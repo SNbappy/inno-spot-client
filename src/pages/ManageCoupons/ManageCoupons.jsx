@@ -18,7 +18,7 @@ const ManageCoupons = () => {
 
     const fetchCoupons = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/coupons");
+            const response = await axios.get("https://inno-spot-server.vercel.app/coupons");
             if (response.data.success) {
                 setCoupons(response.data.coupons);
             }
@@ -35,7 +35,7 @@ const ManageCoupons = () => {
     const handleAddCoupon = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/coupons", formData);
+            const response = await axios.post("https://inno-spot-server.vercel.app/coupons", formData);
             if (response.data.success) {
                 fetchCoupons(); // Refresh coupon list
                 setFormData({ code: "", expiryDate: "", description: "", discountAmount: "" });
@@ -58,7 +58,7 @@ const ManageCoupons = () => {
     const handleUpdateCoupon = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:5000/coupons/${editingCoupon._id}`, formData);
+            const response = await axios.put(`https://inno-spot-server.vercel.app/coupons/${editingCoupon._id}`, formData);
             if (response.data.success) {
                 fetchCoupons(); // Refresh coupon list
                 setEditingCoupon(null);
@@ -71,7 +71,7 @@ const ManageCoupons = () => {
 
     const handleDeleteCoupon = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/coupons/${id}`);
+            const response = await axios.delete(`https://inno-spot-server.vercel.app/coupons/${id}`);
             if (response.data.success) {
                 fetchCoupons(); // Refresh coupon list
             }

@@ -13,7 +13,7 @@ const StatisticsPage = () => {
         // Fetch statistics from the backend
         const fetchStatistics = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/statistics");
+                const response = await axios.get("https://inno-spot-server.vercel.app/statistics");
                 if (response.data.success) {
                     setStatistics(response.data.statistics);
                 }

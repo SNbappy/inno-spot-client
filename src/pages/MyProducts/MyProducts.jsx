@@ -35,7 +35,7 @@ const MyProducts = () => {
         // Fetch products if user email is available
         const fetchMyProducts = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/my-products?email=${userEmail}`);
+                const response = await axios.get(`https://inno-spot-server.vercel.app/my-products?email=${userEmail}`);
                 if (response.data.success) {
                     setProducts(response.data.products);
                 } else {
@@ -53,7 +53,7 @@ const MyProducts = () => {
 
     const deleteProduct = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/delete-product/${id}`);
+            await axios.delete(`https://inno-spot-server.vercel.app/delete-product/${id}`);
             setProducts(products.filter((product) => product._id !== id));
         } catch (error) {
             console.error("Error deleting product:", error.message);
