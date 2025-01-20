@@ -19,6 +19,7 @@ import PrivateRoute from "./PrivateRoute";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import StatisticsPage from "../pages/StatisticsPage/StatisticsPage";
 import ManageCoupons from "../pages/ManageCoupons/ManageCoupons";
+import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
 export const router = createBrowserRouter([
     {
@@ -26,68 +27,97 @@ export const router = createBrowserRouter([
         element: <Main />,
         errorElement: <NotFoundPage />,
         children: [
-            {
-                path: '/',
-                element: <Home />,
-            },
-            {
-                path: 'login',
-                element: <Login />,
-            },
-            {
-                path: 'register',
-                element: <Register />,
-            },
-            {
-                path: 'products',
-                element: <ProductsPage />,
-            },
-            {
-                path: 'product-details/:id',
-                element: <ProductDetailsPage />
-            },
+            { path: "/", element: <Home /> },
+            { path: "login", element: <Login /> },
+            { path: "register", element: <Register /> },
+            { path: "products", element: <ProductsPage /> },
+            { path: "product-details/:id", element: <ProductDetailsPage /> },
         ],
     },
     {
         path: "/dashboard",
-        element: <PrivateRoute><Dashboard /></PrivateRoute>,
+        element: (
+            <PrivateRoute>
+                <Dashboard />
+            </PrivateRoute>
+        ),
         children: [
             {
-                path: 'profile',
-                element: <MyProfile />,
+                path: "profile",
+                element: (
+                    <PrivateRoute allowedRoles={["user", "admin", "moderator"]}>
+                        <MyProfile />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'add-product',
-                element: <AddProduct />,
+                path: "add-product",
+                element: (
+                    <PrivateRoute allowedRoles={["user"]}>
+                        <AddProduct />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'my-products',
-                element: <MyProducts />,
+                path: "my-products",
+                element: (
+                    <PrivateRoute allowedRoles={["user"]}>
+                        <MyProducts />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'update-product/:id',
-                element: <UpdateProduct />
+                path: "update-product/:id",
+                element: (
+                    <PrivateRoute allowedRoles={["user"]}>
+                        <UpdateProduct />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'product-review-queue',
-                element: <ProductReviewQueuePage />
+                path: "product-review-queue",
+                element: (
+                    <PrivateRoute allowedRoles={["moderator"]}>
+                        <ProductReviewQueuePage />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'reported-contents',
-                element: <ReportedContentsPage />
+                path: "reported-contents",
+                element: (
+                    <PrivateRoute allowedRoles={["moderator"]}>
+                        <ReportedContentsPage />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'manage-users',
-                element: <ManageUsersPage />
+                path: "manage-users",
+                element: (
+                    <PrivateRoute allowedRoles={["admin"]}>
+                        <ManageUsersPage />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'statistics',
-                element: <StatisticsPage />
+                path: "statistics",
+                element: (
+                    <PrivateRoute allowedRoles={["admin"]}>
+                        <StatisticsPage />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: 'manage-coupons',
-                element: <ManageCoupons />
+                path: "manage-coupons",
+                element: (
+                    <PrivateRoute allowedRoles={["admin"]}>
+                        <ManageCoupons />
+                    </PrivateRoute>
+                ),
             },
         ],
+    },
+    {
+        path: "/unauthorized",
+        element: <Unauthorized />, // Create a simple Unauthorized component
     },
 ]);
