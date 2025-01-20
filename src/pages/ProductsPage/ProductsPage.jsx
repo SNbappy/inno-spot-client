@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import ProductCard from "../ProductCard/ProductCard";
+import Swal from 'sweetalert2';
 import axios from "axios";
 
 const ProductsPage = () => {
@@ -30,34 +31,67 @@ const ProductsPage = () => {
         const user = auth.currentUser;
 
         if (user) {
-            try {
-                const idToken = await user.getIdToken();
-                const response = await axios.post(
-                    "http://localhost:5000/products/vote",
-                    { productId },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${idToken}`,
-                        },
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to upvote this product!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, upvote!',
+                cancelButtonText: 'Cancel',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const idToken = await user.getIdToken();
+                        const response = await axios.post(
+                            "http://localhost:5000/products/vote",
+                            { productId },
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${idToken}`,
+                                },
+                            }
+                        );
+
+                        console.log("Vote successful:", response.data);
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Okay',
+                        });
+
+                        // Update the product without causing navigation issues
+                        setProducts((prevProducts) =>
+                            prevProducts.map((product) =>
+                                product._id === productId
+                                    ? {
+                                        ...product,
+                                        votesCount: response.data.votesCount,
+                                        votedUsers: Array.isArray(product.votedUsers)
+                                            ? [...product.votedUsers, user.email] // Ensure votedUsers is an array
+                                            : [user.email], // Fallback to an array if not already
+                                    }
+                                    : product
+                            )
+                        );
+                    } catch (error) {
+                        console.error("Error voting:", error.response?.data || error.message);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Error voting. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                        });
                     }
-                );
-
-                console.log("Vote successful:", response.data);
-                alert(response.data.message);
-
-                setProducts((prevProducts) =>
-                    prevProducts.map((product) =>
-                        product._id === productId
-                            ? { ...product, votesCount: response.data.votesCount }
-                            : product
-                    )
-                );
-            } catch (error) {
-                console.error("Error voting:", error.response?.data || error.message);
-                alert("Error voting. Please try again.");
-            }
+                }
+            });
         } else {
-            alert("You need to be logged in to vote.");
+            Swal.fire({
+                title: 'Login Required',
+                text: 'You need to be logged in to vote.',
+                icon: 'warning',
+                confirmButtonText: 'Okay',
+            });
         }
     };
 

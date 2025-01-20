@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";  // Import SweetAlert2
 
 const UpdateProduct = () => {
     const { id } = useParams(); // Get product ID from URL
@@ -54,22 +55,40 @@ const UpdateProduct = () => {
             const response = await axios.put(
                 `http://localhost:5000/update-product/${id}`,
                 {
-                    ...product,
+                    productName: product.productName,
+                    description: product.description,
                     tags: tagsString, // Send tags as a string
                 }
             );
 
             if (response.data.success) {
-                alert("Product updated successfully!");
+                // SweetAlert for success
+                Swal.fire({
+                    title: "Success!",
+                    text: "Product updated successfully!",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
                 navigate("/dashboard/my-products");
             } else {
-                console.error("Error updating product:", response.data.error);
+                // SweetAlert for error (backend error)
+                Swal.fire({
+                    title: "Error!",
+                    text: response.data.error || "Failed to update product.",
+                    icon: "error",
+                    confirmButtonText: "Try Again",
+                });
             }
         } catch (error) {
-            console.error("Error updating product:", error.message);
+            // SweetAlert for error (network or other error)
+            Swal.fire({
+                title: "Error!",
+                text: "There was an error updating the product. Please try again.",
+                icon: "error",
+                confirmButtonText: "Try Again",
+            });
         }
     };
-
 
     if (loading) {
         return <p>Loading...</p>;

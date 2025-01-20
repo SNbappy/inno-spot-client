@@ -38,19 +38,21 @@ const ProductCard = ({ product, userId, handleVote }) => {
 
             {/* Upvote Button */}
             <button
-                onClick={() => handleVote(product?._id)}
-                disabled={isProductOwner || hasUserVoted} // Disable if product owner or user has voted
+                onClick={() => handleVote(product?._id)} // Make sure this is just an onClick handler
+                disabled={isProductOwner || hasUserVoted}
                 className={`px-4 py-2 mt-2 flex items-center gap-2 rounded transition-all ${isProductOwner || hasUserVoted
-                        ? "bg-gray-300 cursor-not-allowed"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
             >
                 {hasUserVoted ? "Voted" : "Upvote"}
                 <span>👍</span>
                 <span>{product?.votesCount || 0}</span>
             </button>
+
         </div>
     );
 };
+
 
 export default ProductCard;
