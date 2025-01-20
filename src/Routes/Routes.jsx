@@ -18,12 +18,13 @@ import ManageUsersPage from "../pages/ManageUsersPage/ManageUsersPage";
 import PrivateRoute from "./PrivateRoute";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import StatisticsPage from "../pages/StatisticsPage/StatisticsPage";
+import ManageCoupons from "../pages/ManageCoupons/ManageCoupons";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Main />,
-        errorElement: <NotFoundPage/>,
+        errorElement: <NotFoundPage />,
         children: [
             {
                 path: '/',
@@ -65,23 +66,27 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'update-product/:id',
-                element: <UpdateProduct/>
+                element: <UpdateProduct />
             },
             {
                 path: 'product-review-queue',
-                element: <ProductReviewQueuePage/>
+                element: <ProductReviewQueuePage />
             },
             {
                 path: 'reported-contents',
-                element: <ReportedContentsPage/>
+                element: <ReportedContentsPage />
             },
             {
                 path: 'manage-users',
-                element: <ManageUsersPage/>
+                element: <ManageUsersPage />
             },
             {
                 path: 'statistics',
-                element: <StatisticsPage/>
+                element: <StatisticsPage />
+            },
+            {
+                path: 'manage-coupons',
+                element: <ManageCoupons />
             },
         ],
     },

@@ -1,42 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
-import axios from "axios";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import axios from "axios";
 
+// Register chart components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StatisticsPage = () => {
-    const [statistics, setStatistics] = useState({
-        totalProducts: 0,
-        acceptedProducts: 0,
-        pendingProducts: 0,
-        totalReviews: 0,
-        totalUsers: 0,
-    });
-
-    const [loading, setLoading] = useState(true);
+    const [statistics, setStatistics] = useState(null);
 
     useEffect(() => {
+        // Fetch statistics from the backend
         const fetchStatistics = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/admin/statistics");
-                setStatistics(response.data);
+                const response = await axios.get("http://localhost:5000/statistics");
+                if (response.data.success) {
+                    setStatistics(response.data.statistics);
+                }
             } catch (error) {
-                console.error("Error fetching statistics:", error);
-            } finally {
-                setLoading(false);
+                console.error("Error fetching statistics", error);
             }
         };
 
         fetchStatistics();
     }, []);
 
-    if (loading) {
-        return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    // If statistics are not yet loaded, show a loading message
+    if (!statistics) {
+        return <div>Loading...</div>;
     }
 
-    const pieData = {
-        labels: ["Accepted Products", "Pending Products", "All Products", "Total Reviews", "Total Users"],
+    // Prepare data for the pie chart
+    const data = {
+        labels: ["Accepted Products", "Pending Products", "Total Products", "Reviews", "Users"],
         datasets: [
             {
                 data: [
@@ -46,17 +42,16 @@ const StatisticsPage = () => {
                     statistics.totalReviews,
                     statistics.totalUsers,
                 ],
-                backgroundColor: ["#4CAF50", "#FFC107", "#03A9F4", "#FF5722", "#9C27B0"],
-                hoverBackgroundColor: ["#66BB6A", "#FFD54F", "#29B6F6", "#FF7043", "#BA68C8"],
+                backgroundColor: ["#36A2EB", "#FFCE56", "#FF6384", "#4BC0C0", "#FF9F40"],
             },
         ],
     };
 
     return (
-        <div className="min-h-screen p-6 bg-gray-100">
-            <h1 className="mb-6 text-3xl font-bold text-center text-blue-600">Admin Statistics</h1>
-            <div className="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-md">
-                <Pie data={pieData} />
+        <div className="p-4">
+            <h1 className="text-2xl font-semibold">Admin Statistics</h1>
+            <div className="mt-6">
+                <Pie data={data} />
             </div>
         </div>
     );
