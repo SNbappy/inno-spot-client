@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const ProductReviewQueuePage = () => {
     const [products, setProducts] = useState([]);
@@ -43,21 +44,61 @@ const ProductReviewQueuePage = () => {
             );
         } catch (error) {
             console.error(`Error updating product status to ${status}:`, error);
-            alert("Failed to update product status.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                text: 'Failed to update product status.',
+                confirmButtonText: 'Retry'
+            });
+
         }
     };
 
     const markAsFeatured = async (id) => {
         try {
-            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/update-product/${id}`, { isFeatured: true });
-            alert("Product marked as featured!");
+            // console.log("Marking product as featured with ID:", id); // Debugging log
+            const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/update-product/${id}`, {
+                isFeatured: true,
+            });
+            // console.log("Response from backend:", response.data); // Debugging log
+
+            if (response.data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Product marked as featured!',
+                    confirmButtonText: 'Okay'
+                });
+                setProducts((prevProducts) =>
+                    prevProducts.map((product) =>
+                        product._id === id ? { ...product, isFeatured: true } : product
+                    )
+                );
+            } else {
+                Swal.fire({
+                    icon: response.data.message ? 'success' : 'error',
+                    title: response.data.message ? 'Success!' : 'Failed!',
+                    text: response.data.message || "Failed to mark as featured.",
+                    confirmButtonText: 'Okay'
+                });
+
+            }
         } catch (error) {
             console.error("Error marking product as featured:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Action Failed',
+                text: 'Failed to mark product as featured.',
+                confirmButtonText: 'Okay'
+            });
+
         }
     };
 
+
+
     const navigateToDetails = (id) => {
-        navigate(`/dashboard/product-details/${id}`);
+        navigate(`/product-details/${id}`);
     };
 
     const handleNextPage = () => {
@@ -98,10 +139,13 @@ const ProductReviewQueuePage = () => {
                                 {/* Mark as Featured Button */}
                                 <button
                                     onClick={() => markAsFeatured(product._id)}
-                                    className="px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600"
+                                    className={`px-3 py-1 text-sm text-white rounded ${product.isFeatured ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"
+                                        }`}
+                                    disabled={product.isFeatured}
                                 >
-                                    Make Featured
+                                    {product.isFeatured ? "Featured" : "Make Featured"}
                                 </button>
+
 
                                 {/* Accept Button */}
                                 <button

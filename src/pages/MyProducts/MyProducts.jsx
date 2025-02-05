@@ -85,8 +85,9 @@ const MyProducts = () => {
                         {products.map((product) => (
                             <tr key={product._id}>
                                 <td className="px-4 py-2 border">{product.productName}</td>
-                                <td className="px-4 py-2 border">0</td>
-                                <td className="px-4 py-2 border">Pending</td>
+                                <td className="px-4 py-2 border">{product.votes || 0}</td>
+                                {/* Dynamically render the status from the product */}
+                                <td className="px-4 py-2 border">{product.status || "Pending"}</td>
                                 <td className="px-4 py-2 border">
                                     <button
                                         className="mr-2 text-blue-500"
@@ -104,6 +105,7 @@ const MyProducts = () => {
                             </tr>
                         ))}
                     </tbody>
+
                 </table>
             ) : (
                 <p>No products found.</p>

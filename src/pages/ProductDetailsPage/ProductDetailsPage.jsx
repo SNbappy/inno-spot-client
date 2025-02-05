@@ -96,7 +96,19 @@ const ProductDetailsPage = () => {
 
 
     // Define the handleReport function
-    const handleReport = () => {
+    const handleReport = async () => {
+        const firebaseUser = auth.currentUser;
+
+        if (!firebaseUser) {
+            Swal.fire({
+                title: 'Login Required',
+                text: 'You need to be logged in to report this product.',
+                icon: 'warning',
+                confirmButtonText: 'Okay',
+            });
+            return;
+        }
+
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to report this product?',
@@ -104,18 +116,44 @@ const ProductDetailsPage = () => {
             showCancelButton: true,
             confirmButtonText: 'Yes, Report!',
             cancelButtonText: 'Cancel',
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                // Call backend API to report the product
-                Swal.fire({
-                    title: 'Reported!',
-                    text: 'This product has been reported successfully.',
-                    icon: 'success',
-                    confirmButtonText: 'Okay',
-                });
+                try {
+                    const idToken = await firebaseUser.getIdToken(); // Retrieve ID token
+                    const requestBody = { productId: id }; // Prepare the request body
+                    console.log("Request Body:", requestBody); // Debug log for request body
+
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_BACKEND_URL}/products/report`,
+                        requestBody,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${idToken}`,
+                            },
+                        }
+                    );
+
+                    Swal.fire({
+                        title: 'Reported!',
+                        text: 'This product has been reported successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Okay',
+                    });
+                } catch (error) {
+                    console.error('Error reporting product:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'There was an error reporting this product. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                    });
+                }
             }
         });
     };
+
+
+
 
 
 

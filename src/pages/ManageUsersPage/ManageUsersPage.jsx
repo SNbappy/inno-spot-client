@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const ManageUsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -32,9 +33,21 @@ const ManageUsersPage = () => {
                     user._id === userId ? { ...user, role } : user
                 )
             );
-            alert(`User role updated to ${role}.`);
+            Swal.fire({
+                icon: 'success',
+                title: 'Role Updated',
+                text: `User role updated to ${role}.`,
+                confirmButtonText: 'Okay'
+            });
+
         } catch (err) {
-            alert("Failed to update user role.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                text: 'Failed to update user role.',
+                confirmButtonText: 'Try Again'
+            });
+
         }
     };
 

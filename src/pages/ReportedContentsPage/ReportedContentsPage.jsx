@@ -29,10 +29,20 @@ const ReportedContentsPage = () => {
             setReportedProducts((prevProducts) =>
                 prevProducts.filter((product) => product._id !== id)
             );
-            alert('Product deleted successfully!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Product deleted successfully!',
+                confirmButtonText: 'Okay'
+            });
         } catch (error) {
             console.error('Error deleting product:', error);
-            alert('Failed to delete product');
+            Swal.fire({
+                icon: 'error',
+                title: 'Deletion Failed',
+                text: 'Failed to delete product.',
+                confirmButtonText: 'Try Again'
+            });
         }
     };
 
