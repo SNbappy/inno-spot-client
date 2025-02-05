@@ -2,10 +2,10 @@
 
 🚀 **Inno Spot Client** is a modern web application built with **React** and **Vite**, integrating **Firebase**, **Stripe**, and other advanced technologies to provide a seamless experience.
 
-![Project Screenshot](screenshot.png)  <!-- Replace with an actual image -->
+![Project Screenshot](https://i.ibb.co.com/FbBk2wtC/Screenshot-18.png)  <!-- Replace with an actual image -->
 
 ## 🔗 Live Demo
-[👉 View Live Project](https://your-live-link.com)
+[👉 View Live Project](https://inno-spot.web.app/)
 
 ---
 
@@ -35,50 +35,31 @@ Inno Spot Client is a **React-based** web application designed to provide an eng
 
 ---
 
-## 📦 Dependencies
-
-### **Main Dependencies**
-- `react`, `react-dom` (Frontend Framework)
-- `react-router-dom` (Routing)
-- `@tanstack/react-query` (Data Fetching & State Management)
-- `axios` (API Requests)
-- `firebase`, `firebase-admin` (Authentication & Storage)
-- `chart.js`, `react-chartjs-2` (Data Visualization)
-- `react-slick`, `slick-carousel` (Carousel)
-- `sweetalert2`, `react-toastify` (Alerts & Notifications)
-- `daisyui`, `tailwindcss` (Styling)
-- `@stripe/react-stripe-js`, `@stripe/stripe-js` (Payment Gateway)
-
-### **Development Dependencies**
-- `vite` (Development & Build Tool)
-- `eslint`, `eslint-plugin-react`, `eslint-plugin-react-hooks` (Code Linting)
-- `postcss`, `autoprefixer` (CSS Processing)
-
----
-
 ## ⚙️ Installation Guide
 
 ### **Prerequisites**
-- Node.js (Latest LTS recommended)
-- npm or yarn installed
+- **Node.js** (Latest LTS recommended)
+- **npm** or **yarn** installed
 
 ### **Steps to Run Locally**
-1. **Clone the repository**
-   ```sh
-   git clone https://github.com/your-username/inno-spot-client.git
-   cd inno-spot-client
-2. **Install dependencies**
-npm install
 
-or
+1️⃣ **Clone the repository**  
+```sh
+git clone https://github.com/your-username/inno-spot-client.git
+cd inno-spot-client
+```
 
-yarn install
+2️⃣ **Install dependencies**  
+```sh
+npm install  
+# or  
+yarn install  
+```
 
----
+3️⃣ **Set up environment variables**  
+Create a `.env` file in the root directory and add:
 
-### **Set up environment variables**
-Create a .env file in the root directory and add:
-
+```env
 VITE_FIREBASE_API_KEY=your-api-key
 VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
 VITE_FIREBASE_PROJECT_ID=your-project-id
@@ -86,51 +67,45 @@ VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket
 VITE_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
 VITE_FIREBASE_APP_ID=your-app-id
 VITE_BACKEND_URL=https://inno-spot-server.vercel.app
+```
 
----
-
-### **Start the development server**
-
+4️⃣ **Start the development server**  
+```sh
 npm run dev
+```
 
-Build the project
-
+5️⃣ **Build the project**  
+```sh
 npm run build
+```
 
----
-
-### **Preview the production build**
-
-    npm run preview
+6️⃣ **Preview the production build**  
+```sh
+npm run preview
+```
 
 ---
 
 ## 🔗 Additional Resources
 
-    Live Demo: https://your-live-link.com
-    Backend Repository: https://github.com/your-username/inno-spot-server
-    Firebase Documentation: https://firebase.google.com/docs
-    Stripe API Docs: https://stripe.com/docs
+- 🔴 **Live Demo**: [View Project](https://inno-spot.web.app/)
+- 📂 **Backend Repository**: [Inno Spot Server](https://github.com/SNbappy/inno-spot-server)
+- 📖 **Firebase Documentation**: [Firebase Docs](https://firebase.google.com/docs)
+- 💳 **Stripe API Docs**: [Stripe Docs](https://stripe.com/docs)
 
 ---
 
 ## 🤝 Contributors
 
-    [Your Name] (@your-username)
-    Feel free to contribute! Fork, create a branch, and submit a PR. 🚀
+👤 **Your Name**  
+- GitHub: [@SNbappy](https://github.com/SNbappy)  
+
+🚀 Feel free to contribute! Fork the repo, create a branch, and submit a PR.  
 
 ---
 
 ## 📜 License
 
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
 
 ## 🎉 Happy Coding!
-
-
----
-
-### **What You Need to Do Next:**
-1. **Replace placeholders** (`your-username`, `your-live-link.com`, etc.) with actual project details.  
-2. **Upload a screenshot** (`screenshot.png`) or remove the line if unavailable.  
-3. **Add any missing links** (backend repo, docs, etc.).  
