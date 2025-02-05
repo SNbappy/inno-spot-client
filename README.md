@@ -74,6 +74,8 @@ or
 
 yarn install
 
+---
+
 ### **Set up environment variables**
 Create a .env file in the root directory and add:
 
@@ -85,6 +87,8 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
 VITE_FIREBASE_APP_ID=your-app-id
 VITE_BACKEND_URL=https://inno-spot-server.vercel.app
 
+---
+
 ### **Start the development server**
 
 npm run dev
@@ -93,9 +97,13 @@ Build the project
 
 npm run build
 
+---
+
 ### **Preview the production build**
 
     npm run preview
+
+---
 
 ## 🔗 Additional Resources
 
@@ -104,10 +112,14 @@ npm run build
     Firebase Documentation: https://firebase.google.com/docs
     Stripe API Docs: https://stripe.com/docs
 
+---
+
 ## 🤝 Contributors
 
     [Your Name] (@your-username)
     Feel free to contribute! Fork, create a branch, and submit a PR. 🚀
+
+---
 
 ## 📜 License
 
