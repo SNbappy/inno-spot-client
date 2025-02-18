@@ -6,11 +6,11 @@ import FeaturedProducts from "../FeaturedProducts/FeaturedProducts";
 const Home = () => {
     return (
         <div>
-            <BannerSlider />
+            {/* <BannerSlider />
             <FeaturedProducts />
             
             <TrendingProductsSection />
-            <CouponCarousel />
+            <CouponCarousel /> */}
         </div>
     );
 };
