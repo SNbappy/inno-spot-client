@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import ProductCard from "../ProductCard/ProductCard";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const ProductsPage = () => {
     const [products, setProducts] = useState([]);
@@ -48,6 +49,9 @@ const ProductsPage = () => {
 
     return (
         <div className="pt-28 max-w-[1250px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 mb-20">
+            <Helmet>
+                <title>Products | InnoSpot</title>
+            </Helmet>
             {/* <h1 className="mb-6 text-3xl font-bold text-center">Discover Innovative Products</h1> */}
 
             <h2 className='pb-5 text-4xl font-bold text-center uppercase '>Discover Innovative Products</h2>
