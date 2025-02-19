@@ -8,7 +8,7 @@ const ProductCard = ({ product, userId, handleVote }) => {
     const isProductOwner = userId === product?.ownerEmail;
 
     return (
-        <div className="p-4 border rounded shadow-md">
+        <div className="p-4 bg-white border rounded shadow-md">
             {/* Product Image */}
             <img
                 src={product?.productImage || "https://via.placeholder.com/150"}
@@ -18,7 +18,7 @@ const ProductCard = ({ product, userId, handleVote }) => {
 
             {/* Product Name */}
             <h2
-                className="text-lg font-bold text-blue-600 cursor-pointer hover:underline"
+                className="text-lg font-bold cursor-pointer text-[#ff3366] hover:underline"
                 onClick={() => navigate(`/product-details/${product._id}`)} // Redirect to product details
             >
                 {product?.productName || "Unnamed Product"}
@@ -42,7 +42,7 @@ const ProductCard = ({ product, userId, handleVote }) => {
                 disabled={isProductOwner || hasUserVoted}
                 className={`px-4 py-2 mt-2 flex items-center gap-2 rounded transition-all ${isProductOwner || hasUserVoted
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-[#ff3366] text-white hover:bg-[#ff5588]"
                     }`}
             >
                 {hasUserVoted ? "Voted" : "Upvote"}

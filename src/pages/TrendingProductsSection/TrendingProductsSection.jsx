@@ -25,7 +25,7 @@ const TrendingProductsSection = ({ isTrendingSection = true }) => { // Add isTre
                 let sortedProducts = response.data.products;
 
                 // Limit to only the top 6 products
-                setProducts(sortedProducts.slice(0, 6));
+                setProducts(sortedProducts.slice(0, 4));
             } catch (err) {
                 console.error("Error fetching products:", err);
                 setError("Failed to fetch trending products.");
@@ -105,25 +105,29 @@ const TrendingProductsSection = ({ isTrendingSection = true }) => { // Add isTre
     if (error) return <div className="text-center text-red-500">{error}</div>;
 
     return (
-        <div className="p-4 md:p-8 bg-gray-50">
-            <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
-                {isTrendingSection ? "Trending Products" : "New Arrivals"}
-            </h2>
-            {products.length === 0 ? (
-                <div className="text-center text-gray-500">No products found.</div>
-            ) : (
-                <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {products.map((product) => (
-                        <li key={product._id} className="transition-all transform hover:scale-105">
-                            <ProductCard
-                                product={product}
-                                userId={user?.email}
-                                handleVote={handleVote}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            )}
+        <div>
+            <div className="max-w-[1250px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-0">
+                {/* <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
+                    {isTrendingSection ? "Trending Products" : "New Arrivals"}
+                </h2> */}
+                <h2 className='pb-5 text-4xl font-bold text-center uppercase'>Trending Products</h2>
+                <p className='pb-10 text-xl font-semibold text-center'>Discover and Explore the Most Innovative Products of the Moment!</p>
+                {products.length === 0 ? (
+                    <div className="text-center text-gray-500">No products found.</div>
+                ) : (
+                    <ul className="grid grid-cols-1 gap-6 mb-28 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {products.map((product) => (
+                            <li key={product._id} className="transition-all transform hover:scale-105">
+                                <ProductCard
+                                    product={product}
+                                    userId={user?.email}
+                                    handleVote={handleVote}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };

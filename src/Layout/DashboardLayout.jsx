@@ -1,7 +1,7 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const DashboardLayout = ({ sidebarLinks, title }) => {
+const DashboardLayout = ({ sidebarLinks, title, children }) => {
     return (
         <div className="flex">
             {/* Sidebar */}
@@ -19,8 +19,8 @@ const DashboardLayout = ({ sidebarLinks, title }) => {
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1 p-6">
-                <Outlet />
+            <div className="flex-1 min-h-screen p-6 border border-gray-300">
+                {children} {/* Ensure content is properly displayed */}
             </div>
         </div>
     );

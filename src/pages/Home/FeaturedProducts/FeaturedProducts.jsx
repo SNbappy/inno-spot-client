@@ -99,23 +99,28 @@ const FeaturedProducts = () => {
     }, []);
 
     return (
-        <div className="p-4 md:p-8 bg-gray-50">
-            <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">Featured Products</h2>
-            {products.length === 0 ? (
-                <div className="text-center text-gray-500">Loading featured products...</div>
-            ) : (
-                <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {products.map((product) => (
-                        <li key={product._id} className="transition-all transform hover:scale-105">
-                            <ProductCard
-                                product={product}
-                                userId={userId}
-                                handleVote={handleVote}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            )}
+        <div>
+            <div className="max-w-[1250px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-0">
+                {/* <h2 className="text-3xl font-bold text-center">Featured Products</h2>
+                <p className="mb-6 font-semibold text-center">Discover and Explore the Most Innovative Products of the Moment!</p> */}
+                <h2 className='pb-5 text-4xl font-bold text-center uppercase'>Featured Products</h2>
+                <p className='pb-10 text-xl font-semibold text-center'>Discover and Explore the Most Innovative Products of the Moment!</p>
+                {products.length === 0 ? (
+                    <div className="text-center text-gray-500">Loading featured products...</div>
+                ) : (
+                    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-28">
+                        {products.map((product) => (
+                            <li key={product._id} className="transition-all transform hover:scale-105">
+                                <ProductCard
+                                    product={product}
+                                    userId={userId}
+                                    handleVote={handleVote}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };

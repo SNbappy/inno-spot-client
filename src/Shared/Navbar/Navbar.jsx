@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../pages/firebase/firebase.config";
 
@@ -11,6 +11,7 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    const location = useLocation();  // Get current route
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -52,10 +53,12 @@ const Navbar = () => {
 
     if (loading) return null;
 
-    return (
-        <div className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-pink-500 text-white pt-8"}`}>
-            <nav className="max-w-[1250px] mx-auto px-4 py-4 flex items-center justify-between md:px-6 lg:px-8">
+    // Check if on home page
+    const isHomePage = location.pathname === "/";
 
+    return (
+        <div className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isHomePage && !isScrolled ? "bg-transparent text-white pt-8" : "bg-white shadow-md"}`}>
+            <nav className="max-w-[1250px] mx-auto px-4 py-4 flex items-center justify-between md:px-6 lg:px-8 xl:px-0">
                 {/* Logo */}
                 <Link to="/" className="flex items-center text-3xl font-bold">
                     <img className="w-10" src="/src/assets/Black & Blue Minimalist Modern Initial Font Logo.svg" alt="Logo" />
@@ -99,7 +102,7 @@ const Navbar = () => {
                     )}
 
                     {/* Contact Us Button */}
-                    <Link to="/contact" className="bg-[#ff3366] text-white px-6 py-2 rounded-full transition hover:bg-red-600">
+                    <Link to="/contact" className="bg-[#ff3366] text-white px-6 py-2 rounded-full transition hover:bg-red-600 text-lg font-bold">
                         Contact Us
                     </Link>
                 </div>
@@ -108,7 +111,7 @@ const Navbar = () => {
                 <div className="flex items-center md:hidden">
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="text-white focus:outline-none"
+                        className="focus:outline-none"
                         aria-label="Toggle Menu"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -145,7 +148,7 @@ const Navbar = () => {
                         )}
 
                         {/* Contact Us Button (Mobile) */}
-                        <Link to="/contact" className="mt-4 bg-[#ff3366] text-white px-6 py-2 rounded-full transition hover:bg-red-600">
+                        <Link to="/contact" className="mt-4 bg-[#ff3366] text-white px-6 py-2 rounded-full transition hover:bg-red-600 text-lg font-bold">
                             Contact Us
                         </Link>
                     </div>

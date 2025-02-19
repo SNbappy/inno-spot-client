@@ -1,16 +1,23 @@
 import CouponCarousel from "../../CouponCarousel/CouponCarousel";
 import TrendingProductsSection from "../../TrendingProductsSection/TrendingProductsSection";
 import BannerSlider from "../BannerSlider/BannerSlider";
+import EmpoweringInnovation from "../EmpoweringInnovation/EmpoweringInnovation";
 import FeaturedProducts from "../FeaturedProducts/FeaturedProducts";
+import Reviews from "../reviews/reviews";
+import SuccessMetrics from "../SuccessMetrics/SuccessMetrics";
+import WhatWeProvide from "../WhatWeProvide/WhatWeProvide";
 
 const Home = () => {
     return (
         <div>
-            {/* <BannerSlider />
+            <BannerSlider />
+            <WhatWeProvide />
+            <EmpoweringInnovation />
             <FeaturedProducts />
-            
             <TrendingProductsSection />
-            <CouponCarousel /> */}
+            <SuccessMetrics />
+            <Reviews />
+            <CouponCarousel />
         </div>
     );
 };

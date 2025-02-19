@@ -10,8 +10,7 @@ import slide1 from "../../../assets/glenn-carstens-peters-npxXWgQ33ZQ-unsplash.j
 import slide2 from "../../../assets/idea.jpg";
 import slide3 from "../../../assets/joinCommunity.jpg";
 
-const BannerSlider = () => {
-    // Slide data
+const HeroSection = () => {
     const slides = [
         {
             id: 1,
@@ -37,7 +36,7 @@ const BannerSlider = () => {
     ];
 
     return (
-        <div className="relative w-full h-screen z-1">
+        <div className="relative w-full h-screen overflow-hidden">
             <Swiper
                 pagination={{
                     dynamicBullets: true,
@@ -51,13 +50,11 @@ const BannerSlider = () => {
             >
                 {slides.map((slide) => (
                     <SwiperSlide key={slide.id} className="relative">
-                        {/* Background Image */}
                         <img
                             src={slide.image}
                             alt={slide.title}
-                            className="object-cover w-full h-full"
+                            className="object-cover w-full h-full absolute left-0 top-0 z-[-1]"
                         />
-                        {/* Text Overlay */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white bg-black bg-opacity-50">
                             <h1 className="text-4xl font-bold md:text-5xl drop-shadow-lg">
                                 {slide.title}
@@ -73,4 +70,4 @@ const BannerSlider = () => {
     );
 };
 
-export default BannerSlider;
+export default HeroSection;
