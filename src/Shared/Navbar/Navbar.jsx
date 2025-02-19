@@ -68,7 +68,7 @@ const Navbar = () => {
                 {/* Desktop Navigation */}
                 <div className="items-center hidden space-x-6 md:flex">
                     <Link to="/" className="text-lg font-medium transition hover:text-blue-600">Home</Link>
-                    <Link to="/" className="text-lg font-medium transition hover:text-blue-600">About</Link>
+                    <Link to="/about" className="text-lg font-medium transition hover:text-blue-600">About</Link>
                     <Link to="/products" className="text-lg font-medium transition hover:text-blue-600">Products</Link>
 
                     {!user ? (

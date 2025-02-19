@@ -20,6 +20,7 @@ import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import StatisticsPage from "../pages/StatisticsPage/StatisticsPage";
 import ManageCoupons from "../pages/ManageCoupons/ManageCoupons";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
+import AboutPage from "../pages/AboutPage/AboutPage";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
             { path: "login", element: <Login /> },
             { path: "register", element: <Register /> },
             { path: "products", element: <ProductsPage /> },
+            { path: "about", element: <AboutPage /> },
             { path: "product-details/:id", element: <PrivateRoute><ProductDetailsPage /></PrivateRoute> },
         ],
     },
