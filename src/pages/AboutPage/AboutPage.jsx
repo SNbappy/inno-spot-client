@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutPage = () => {
     return (
-        <div className="flex items-center justify-center min-h-screen p-6 bg-gray-100">
+        <div className="flex items-center justify-center max-w-[1250px] pt-28 mx-auto px-4 sm:px-6 lg:px-8 xl:px-0 mb-20">
             <div className="max-w-4xl p-8 text-gray-800 bg-white shadow-xl rounded-2xl">
                 <h1 className="mb-6 text-4xl font-bold text-center text-blue-600">About InnoSpot</h1>
                 <p className="text-lg text-center text-gray-700">
